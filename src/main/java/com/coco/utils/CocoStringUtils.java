@@ -1,8 +1,8 @@
 package com.coco.utils;
 
 /**
- * Hello world!
- *
+ * @author wanglin/netboy
+ * @version 创建时间：2016年08月15日 下午8:30:46
  */
 public class CocoStringUtils 
 {
