@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.ThreadPoolExecutor.CallerRunsPolicy;
@@ -24,6 +25,25 @@ public class ThreadPoolHolder {
     private static ReentrantLock lock;
 
     private ThreadPoolHolder() {}
+
+    /**
+     * 创建定时执行的线程池
+     */
+    public static ScheduledExecutorService createScheduledPool(int corePoolSize, String threadName, boolean isDaemon) {
+        ThreadFactory threadFactory =
+                new ThreadFactoryBuilder().setNameFormat(threadName + "-%d").setDaemon(isDaemon).build();
+        return Executors.newScheduledThreadPool(corePoolSize, threadFactory);
+    }
+
+    /**
+     * 创建指定线程数目的线程池
+     */
+    public static ExecutorService createFixedPool(int corePoolSize, String threadName, boolean isDaemon) {
+        ThreadFactory threadFactory =
+                new ThreadFactoryBuilder().setNameFormat(threadName + "-%d").setDaemon(isDaemon).build();
+        return Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors(), threadFactory);
+    }
+
 
     public static ExecutorService getFixedPool(String poolName, Integer min, Integer max) {
         if (threadPoolHolder == null) {
